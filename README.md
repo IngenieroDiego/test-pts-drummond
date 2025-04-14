@@ -25,12 +25,4 @@ Aplicación web para evaluar conocimientos sobre Procedimientos de Trabajo Segur
 ---
 
 <div align="center">
-  <img src="https://img.icons8.com/color/96/000000/code-fork.png" alt="Repositorio" style="vertical-align: middle"/> 
-  <span style="font-size: 24px; margin: 0 10px;">|</span>
-  <img src="https://img.icons8.com/color/96/000000/globe.png" alt="Página Web" style="vertical-align: middle"/>
-</div>
-
----
-
-<div align="center">
   <p>Desarrollado con ❤️ por <a href="https://github.com/IngenieroDiego">Ingeniero Diego</a></p>
