@@ -48,33 +48,33 @@ const questionBank = [
         question: "¿Qué se debe hacer cuando el camión presenta una sobrecarga de material?",
         options: [
             "Continuar operando el camión hasta llegar a destino.",
-            "Se debe avisar al supervisor del área y descargar en el lugar que él indique.",
             "Intentar ajustar la carga usando el freno de emergencia del camión.",
             "Ignorar la sobrecarga si no afecta la velocidad."
+            "Se debe avisar al supervisor del área y descargar en el lugar que él indique.",
         ],
-        correct: 1,
+        correct: 3,
         feedback: "✅ Correcto! La sobrecarga puede generar daños a los equipos y afectar la seguridad. Debe ser reportada y corregida inmediatamente."
     },
     {
         question: "Al operar en una zona con baja visibilidad, ¿qué debo hacer?",
         options: [
             "Encender las luces intermitentes y continuar a la misma velocidad, asumiendo que otros conductores me verán.",
-            "Asegurarme de que las luces estén funcionando correctamente y mantener la velocidad adecuada.",
             "Conducir pegado al vehículo de adelante para guiarme por sus luces y no perder tiempo.",
+            "Asegurarme de que las luces estén funcionando correctamente y mantener la velocidad adecuada.",
             "Detenerme inmediatamente y esperar a que la visibilidad mejore."
         ],
-        correct: 1,
+        correct: 2,
         feedback: "✅ Correcto! El operaReducidor debe mantener la velocidad adecuada y asegurarse de que las luces estén funcionando correctamente para garantizar la seguridad en zonas de baja visibilidad."
     },
     {
         question: "Durante el cargue, el operador de la pala no está levantando el balde correctamente. ¿Qué debe hacer el operador del camión?",
         options: [
             "Esperar pacientemente hasta que el operador de la pala levante el balde correctamente.",
-            "Detener el camión y notificar al supervisor sobre el problema.",
             "Acelerar y completar el cargue para evitar retrasos.",
             "Cambiar de posición y realizar el cargue en otro sitio."
+            "Detener el camión y notificar al supervisor sobre el problema.",
         ],
-        correct: 1,
+        correct: 3,
         feedback: "✅ Correcto! Es fundamental que los operadores se coordinen para evitar accidentes. El supervisor debe ser notificado si algo no está funcionando correctamente."
     },
     {
@@ -82,10 +82,10 @@ const questionBank = [
         options: [
             "Usar señales manuales para guiar a otros mientras continúo la descarga con precaución.",
             "Girar las llantas hacia el lado contrario para compensar la proximidad, sin detener la operación.",
-            "Continuar con la descarga sin mover el camión.",
             "Detenerme y verificar que el camión esté correctamente posicionado, asegurándome de que no haya riesgo de impacto."
+            "Continuar con la descarga sin mover el camión.",
         ],
-        correct: 3,
+        correct: 2,
         feedback: "✅ Correcto! El operador debe asegurarse de que el camión esté correctamente posicionado y no haya riesgo de impacto con la pared o el equipo cercano antes de proceder con la descarga."
     },
     {
@@ -103,55 +103,55 @@ const questionBank = [
         question: "Si estoy en una zona con alta concentración de polvo y no puedo ver claramente, ¿qué debo hacer?",
         options: [
             "Encender las luces antiniebla y reducir ligeramente la velocidad, asumiendo que esto es suficiente para operar con seguridad.",
-            "Detener la operación, esperar a que el polvo se disipen y tomar las medidas necesarias para continuar de forma segura.",
             "Usar el radio para avisar a otros operadores de la baja visibilidad, pero continuar trabajando con precaución.",
             "Dirigirme a una zona menos polvorienta del mismo sitio para terminar la tarea, sin detener por completo la operación."
+            "Detener la operación, esperar a que el polvo se disipen y tomar las medidas necesarias para continuar de forma segura.",
         ],
-        correct: 1,
+        correct: 3,
         feedback: "✅ Correcto! Es importante que el operador detenga la operación, espere a que el polvo se disipe y tome las medidas necesarias para continuar con seguridad."
     },
     {
         question: "¿Qué debe hacer el operador si necesita salir de la cabina durante el proceso de carga?",
         options: [
-            "Salir rápidamente si lleva chaleco reflectivo y casco, verificando que no haya maquinaria en movimiento cerca.",
             "Por ningún motivo debe salir de la cabina mientras se produce el proceso de cargue.",
+            "Salir rápidamente si lleva chaleco reflectivo y casco, verificando que no haya maquinaria en movimiento cerca.",
             "Puede salir de la cabina para verificar el estado del camión en cualquier momento.",
             "Coordinar con el operador de la pala para que pause brevemente el cargue mientras salgo."
         ],
-        correct: 1,
+        correct: 0,
         feedback: "✅ Correcto! El operador no debe salir de la cabina mientras se produce el proceso de cargue para evitar posibles accidentes."
     },
     {
         question: "Durante la operación nocturna de cargue, ¿qué debe hacer el operador respecto a las luces del camión?",
         options: [
             "Encender las luces altas intermitentemente para alertar a otros sin causar deslumbramiento constante.",
-            "Apagar las luces frontales para no encandilar a los operadores de otros equipos o camiones.",
             "Dejar todas las luces encendidas, incluyendo las de trabajo, para maximizar la visibilidad del área.",
+            "Apagar las luces frontales para no encandilar a los operadores de otros equipos o camiones.",
             "Apagar todas las luces del camión durante el cargue."
         ],
-        correct: 1,
+        correct: 2,
         feedback: "✅ Correcto! Durante la operación nocturna, el operador debe apagar las luces frontales para no encandilar a los operadores de otros equipos o camiones."
     },
     {
         question: "¿Qué debe hacer el operador si ocurre un incidente o accidente durante la realización de la tarea?",
         options: [
-            "Tomar fotos del área con su celular antes de mover el equipo, para luego informar al supervisor.",
             "Informar inmediatamente al supervisor y no mover el equipo del área donde ocurrió el evento.",
+            "Tomar fotos del área con su celular antes de mover el equipo, para luego informar al supervisor.",
             "Asegurar primero que nadie resulte herido, y solo después mover el equipo si bloquea el paso.",
             "Esperar a que llegue un supervisor y se encargue de la situación sin mover el equipo."
         ],
-        correct: 1,
+        correct: 0,
         feedback: "✅ Correcto! El operador debe informar inmediatamente a sus supervisores sobre cualquier incidente o accidente, sin mover el equipo del área donde ocurrió el evento para tomar las evidencias correspondientes."
     },
     {
         question: "¿Qué debe hacer el operador cuando el equipo cambia de estado disponible a fuera de servicio?",
         options: [
             "Verificar primero si el equipo puede volver a funcionar antes de reportar el cambio de estado.",
-            "Informar inmediatamente al supervisor y al despacho sobre el cambio de estado.",
             "Solicitar a un compañero que revise el equipo para confirmar el estado antes de informar.",
+            "Informar inmediatamente al supervisor y al despacho sobre el cambio de estado.",
             "No es necesario informar si el equipo está fuera de servicio."
         ],
-        correct: 1,
+        correct: 2,
         feedback: "✅ Correcto! Cuando el equipo cambia de estado disponible a fuera de servicio, el operador debe informar inmediatamente al despacho y al supervisor de camiones."
     },
     {
