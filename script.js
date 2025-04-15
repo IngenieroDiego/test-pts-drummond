@@ -64,7 +64,7 @@ const questionBank = [
             "Detenerme inmediatamente y esperar a que la visibilidad mejore."
         ],
         correct: 1,
-        feedback: "✅ Correcto! El operaReducidor debe mantener la velocidad adecuada y asegurarse de que las luces estén funcionando correctamente para garantizar la seguridad en zonas de baja visibilidad."
+        feedback: "✅ Correcto! El operador debe mantener la velocidad adecuada y asegurarse de que las luces estén funcionando correctamente para garantizar la seguridad en zonas de baja visibilidad."
     },
     {
         question: "Durante el cargue, el operador de la pala no está levantando el balde correctamente. ¿Qué debe hacer el operador del camión?",
