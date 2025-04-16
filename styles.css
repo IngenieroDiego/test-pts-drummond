@@ -321,6 +321,13 @@ h1 span {
     margin-right: 10px;
 }
 
+/* Controles de navegación */
+.navigation-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
 /* Botón secundario */
 .btn-secondary {
     background-color: white;
@@ -335,14 +342,18 @@ h1 span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover:not(:disabled) {
     background-color: var(--secondary-color);
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Pantalla de resultados */
@@ -461,6 +472,16 @@ h1 span {
     color: #7e5109;
 }
 
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.question-card {
+    animation: fadeIn 0.3s ease-out;
+}
+
 /* Diseño responsivo */
 @media (max-width: 768px) {
     .header {
@@ -488,5 +509,14 @@ h1 span {
     .score-details {
         flex-direction: column;
         gap: 10px;
+    }
+    
+    .navigation-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-secondary {
+        width: 100%;
     }
 }
