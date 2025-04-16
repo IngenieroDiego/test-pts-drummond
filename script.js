@@ -174,7 +174,7 @@ let timer;
 let timeLeft = 120; // 2 minutos por pregunta
 let userAnswers = [];
 let shuffledQuestions = [];
-let currentShuffledIndexes = [];
+let correctAnswerPositions = [];
 
 // Referencias a elementos del DOM
 const elements = {
@@ -183,6 +183,7 @@ const elements = {
     resultsScreen: document.getElementById('results-screen'),
     startBtn: document.getElementById('start-btn'),
     nextBtn: document.getElementById('next-btn'),
+    prevBtn: document.getElementById('prev-btn'),
     restartBtn: document.getElementById('restart-btn'),
     questionNumber: document.getElementById('question-number'),
     questionText: document.getElementById('question-text'),
@@ -200,17 +201,78 @@ const elements = {
 };
 
 /**
- * Mezcla un array usando el algoritmo Fisher-Yates
+ * Mezcla un array asegurando que las respuestas correctas no se repitan en la misma posición
  * @param {Array} array - Array a mezclar
  * @returns {Array} - Array mezclado
  */
 function shuffleArray(array) {
     const newArray = [...array];
+    let lastCorrectPos = -1;
+    
     for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        // Seleccionar un índice aleatorio que no repita la posición correcta anterior
+        let randomIndex;
+        let attempts = 0;
+        const maxAttempts = 10;
+        
+        do {
+            randomIndex = Math.floor(Math.random() * (i + 1));
+            attempts++;
+            
+            // Si es la primera pregunta o hemos intentado demasiado, aceptamos cualquier posición
+            if (i === newArray.length - 1 || attempts >= maxAttempts) break;
+            
+        } while (randomIndex === lastCorrectPos);
+        
+        // Intercambiar elementos
+        [newArray[i], newArray[randomIndex]] = [newArray[randomIndex], newArray[i]];
+        
+        // Registrar posición correcta para la siguiente iteración
+        if (i === newArray.length - 1) {
+            lastCorrectPos = randomIndex;
+        } else {
+            lastCorrectPos = newArray[i].correct;
+        }
     }
+    
     return newArray;
+}
+
+/**
+ * Mezcla las opciones de respuesta de una pregunta
+ * @param {Object} question - Pregunta a mezclar
+ * @param {number} prevCorrectPos - Posición correcta de la pregunta anterior
+ * @returns {Object} - Pregunta con opciones mezcladas
+ */
+function shuffleQuestionOptions(question, prevCorrectPos) {
+    const options = [...question.options];
+    const correctAnswer = options[question.correct];
+    let shuffledOptions;
+    let newCorrectIndex;
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    do {
+        // Mezclar opciones usando Fisher-Yates
+        shuffledOptions = [...options];
+        for (let i = shuffledOptions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+        }
+        
+        newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+        attempts++;
+        
+        // Si no hay pregunta anterior o hemos intentado demasiado, aceptamos cualquier posición
+        if (prevCorrectPos === undefined || attempts >= maxAttempts) break;
+        
+    } while (newCorrectIndex === prevCorrectPos);
+    
+    return {
+        ...question,
+        options: shuffledOptions,
+        correct: newCorrectIndex
+    };
 }
 
 /**
@@ -220,23 +282,13 @@ function initializeTest() {
     // 1. Mezclar el orden de las preguntas
     shuffledQuestions = shuffleArray([...questionBank]);
     
-    // 2. Para cada pregunta, mezclar las opciones pero mantener referencia a la correcta
-    currentShuffledIndexes = [];
-    shuffledQuestions = shuffledQuestions.map((q, qIndex) => {
-        const correctAnswer = q.options[q.correct];
-        const shuffledOptions = shuffleArray([...q.options]);
-        const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
-        
-        // Guardar mapeo de índices para referencia
-        const originalIndexes = q.options.map((_, i) => i);
-        const shuffledIndexes = shuffleArray([...originalIndexes]);
-        currentShuffledIndexes[qIndex] = shuffledIndexes;
-        
-        return {
-            ...q,
-            options: shuffledOptions,
-            correct: newCorrectIndex
-        };
+    // 2. Para cada pregunta, mezclar las opciones evitando patrones repetitivos
+    let prevCorrectPos;
+    shuffledQuestions = shuffledQuestions.map((question, index) => {
+        const shuffledQuestion = shuffleQuestionOptions(question, prevCorrectPos);
+        prevCorrectPos = shuffledQuestion.correct;
+        correctAnswerPositions.push(prevCorrectPos);
+        return shuffledQuestion;
     });
     
     // 3. Reiniciar variables de estado
@@ -281,6 +333,30 @@ function showQuestion() {
     // Resetear elementos de UI
     elements.nextBtn.style.display = 'none';
     elements.feedbackBox.style.display = 'none';
+    
+    // Actualizar estado del botón Anterior
+    elements.prevBtn.disabled = currentQuestionIndex === 0;
+    
+    // Si ya hay una respuesta para esta pregunta, mostrarla
+    if (userAnswers[currentQuestionIndex] !== null) {
+        const userAnswer = userAnswers[currentQuestionIndex];
+        const options = elements.optionsContainer.querySelectorAll('.option');
+        
+        options.forEach(opt => opt.style.pointerEvents = 'none');
+        
+        if (userAnswer.selected !== null) {
+            options[userAnswer.selected].classList.add(userAnswer.isCorrect ? 'correct' : 'incorrect');
+        }
+        if (!userAnswer.isCorrect) {
+            options[question.correct].classList.add('correct');
+        }
+        
+        elements.feedbackBox.textContent = userAnswer.isCorrect ? question.feedback : 
+            `❌ Incorrecto. La respuesta correcta es: ${String.fromCharCode(65 + question.correct)}. ${question.options[question.correct]}\n\n${question.feedback}`;
+        elements.feedbackBox.className = `feedback-box ${userAnswer.isCorrect ? 'correct' : 'incorrect'}-feedback`;
+        elements.feedbackBox.style.display = 'block';
+        elements.nextBtn.style.display = 'block';
+    }
 }
 
 /**
@@ -333,6 +409,16 @@ function nextQuestion() {
         showQuestion();
     } else {
         showResults();
+    }
+}
+
+/**
+ * Retrocede a la pregunta anterior
+ */
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showQuestion();
     }
 }
 
@@ -398,7 +484,7 @@ function showResults() {
     elements.resultsScreen.style.display = 'block';
     
     // Calcular estadísticas
-    const correct = userAnswers.filter(a => a.isCorrect).length;
+    const correct = userAnswers.filter(a => a && a.isCorrect).length;
     const incorrect = shuffledQuestions.length - correct;
     const percentage = Math.round((correct / shuffledQuestions.length) * 100);
     
@@ -463,6 +549,8 @@ function restartTest() {
     currentQuestionIndex = 0;
     score = 0;
     userAnswers = [];
+    shuffledQuestions = [];
+    correctAnswerPositions = [];
     elements.resultsScreen.style.display = 'none';
     elements.introScreen.style.display = 'block';
 }
@@ -475,6 +563,7 @@ elements.startBtn.addEventListener('click', () => {
 });
 
 elements.nextBtn.addEventListener('click', nextQuestion);
+elements.prevBtn.addEventListener('click', prevQuestion);
 elements.restartBtn.addEventListener('click', restartTest);
 
 // Inicialización cuando el DOM está listo
